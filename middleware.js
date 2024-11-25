@@ -1,0 +1,24 @@
+const products = require("./products");
+
+function logRequest(req, res, next) {
+    console.log(`Received a ${req.method} request to ${req.url}`);
+    next(); // Call the next middleware function in the chain
+ }
+ 
+ function blockSpecialBrand(req, res, next) {
+    if (req.params.brand === 'Brand C') {
+        res.status(403).send('Unavailable Brand');
+    } else {
+        next();
+    }
+ }
+
+ function blockWrongId(req, res, next) {
+    if (Number(req.params.id) > products.length) {
+        res.status(403).send('Wrond ID');
+    } else {
+        next();
+    }
+ }
+ 
+ module.exports = { logRequest, blockSpecialBrand, blockWrongId };
